@@ -1,0 +1,1084 @@
+/* Kaffy UI - Kafdrop-inspired styling */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #0f0f23, #1a1a2e, #16213e);
+    color: #e0e0e0;
+    line-height: 1.6;
+    min-height: 100vh;
+    animation: backgroundShift 10s ease-in-out infinite alternate;
+}
+
+/* Devil May Cry background */
+body {
+    background: #0f0f23 url('/images/tumblr_89310522c5fdab8257d2fd91a9ffb561_7078beea_540.webp') center center fixed;
+    background-size: cover;
+    position: relative;
+}
+
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(15, 15, 35, 0.3);
+    z-index: -1;
+}
+
+/* Header - Devil May Cry inspired */
+.header {
+    background: rgba(26, 26, 46, 0.3);
+    color: #e94560;
+    padding: 1rem 2rem;
+    box-shadow: 0 4px 20px rgba(233, 69, 96, 0.3);
+    position: relative;
+    overflow: hidden;
+    backdrop-filter: blur(10px);
+}
+
+.header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(233, 69, 96, 0.2), transparent);
+    animation: sweep 3s infinite;
+}
+
+@keyframes sweep {
+    0% { left: -100%; }
+    100% { left: 100%; }
+}
+
+.header h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    text-shadow: 0 0 10px rgba(233, 69, 96, 0.5);
+    animation: glow 2s ease-in-out infinite alternate;
+}
+
+@keyframes glow {
+    from { text-shadow: 0 0 10px rgba(233, 69, 96, 0.5); }
+    to { text-shadow: 0 0 20px rgba(233, 69, 96, 0.8), 0 0 30px rgba(233, 69, 96, 0.6); }
+}
+
+.header .subtitle {
+    opacity: 0.8;
+    font-size: 0.9rem;
+}
+
+/* Navigation */
+.nav-tabs {
+    background: white;
+    border-bottom: 1px solid #dee2e6;
+    padding: 0 2rem;
+}
+
+.nav-tabs .nav-item {
+    display: inline-block;
+    margin-right: 1rem;
+}
+
+.nav-tabs .nav-link {
+    display: inline-block;
+    padding: 1rem 1.5rem;
+    text-decoration: none;
+    color: #6c757d;
+    border-bottom: 3px solid transparent;
+    transition: all 0.3s ease;
+}
+
+.nav-tabs .nav-link:hover,
+.nav-tabs .nav-link.active {
+    color: #2c3e50;
+    border-bottom-color: #3498db;
+}
+
+/* Main content */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+/* Cards - Devil May Cry style */
+.card {
+    background: rgba(30, 30, 46, 0.2);
+    border: 1px solid rgba(233, 69, 96, 0.3);
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    margin-bottom: 2rem;
+    overflow: hidden;
+    transform: translateY(0);
+    transition: all 0.3s ease;
+    animation: slideInUp 0.6s ease-out;
+    backdrop-filter: blur(10px);
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(233, 69, 96, 0.2);
+    border-color: rgba(233, 69, 96, 0.6);
+}
+
+@keyframes slideInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.card-header {
+    background: linear-gradient(90deg, #e94560, #c73650);
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid rgba(233, 69, 96, 0.3);
+    font-weight: 600;
+    color: white;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+}
+
+.card-body {
+    padding: 1.5rem;
+    background: rgba(42, 42, 58, 0.1);
+    color: #e0e0e0;
+}
+
+/* Stats grid - Animated */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+    animation: fadeInGrid 0.8s ease-out;
+}
+
+@keyframes fadeInGrid {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.stat-card {
+    background: rgba(30, 30, 46, 0.2);
+    padding: 1.5rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    text-align: center;
+    border-left: 4px solid #e94560;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    animation: pulse 2s infinite;
+    backdrop-filter: blur(10px);
+}
+
+.stat-card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 25px rgba(233, 69, 96, 0.3);
+}
+
+.stat-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(233, 69, 96, 0.1), transparent);
+    transition: left 0.5s;
+}
+
+.stat-card:hover::before {
+    left: 100%;
+}
+
+@keyframes pulse {
+    0%, 100% { border-left-color: #e94560; }
+    50% { border-left-color: #ff6b7a; }
+}
+
+.stat-value {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #e94560;
+    margin-bottom: 0.5rem;
+    text-shadow: 0 0 10px rgba(233, 69, 96, 0.5);
+    animation: countUp 1s ease-out;
+}
+
+@keyframes countUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.stat-label {
+    color: #b0b0b0;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* Tables - Dark theme */
+.table-container {
+    overflow-x: auto;
+    animation: slideIn 0.5s ease-out;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateX(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background: rgba(42, 42, 58, 0.2);
+    color: #e0e0e0;
+    backdrop-filter: blur(5px);
+}
+
+th, td {
+    padding: 0.75rem 1rem;
+    text-align: left;
+    border-bottom: 1px solid rgba(233, 69, 96, 0.2);
+    transition: all 0.3s ease;
+}
+
+th {
+    background: linear-gradient(90deg, #e94560, #c73650);
+    font-weight: 600;
+    color: white;
+    position: sticky;
+    top: 0;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+}
+
+tr:hover {
+    background: rgba(233, 69, 96, 0.1);
+    transform: scale(1.02);
+    box-shadow: 0 2px 8px rgba(233, 69, 96, 0.2);
+}
+
+/* Buttons - Devil May Cry hexagonal style */
+.btn {
+    display: inline-block;
+    padding: 0.75rem 1.5rem;
+    border: none;
+    background: linear-gradient(135deg, #e94560, #c73650);
+    color: white;
+    text-decoration: none;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    clip-path: polygon(10px 0%, 100% 0%, calc(100% - 10px) 100%, 0% 100%);
+    box-shadow: 0 0 20px rgba(233, 69, 96, 0.4);
+}
+
+.btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+    transition: left 0.4s;
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 25px rgba(233, 69, 96, 0.6);
+}
+
+.btn:hover::before {
+    left: 100%;
+}
+
+.btn:active {
+    transform: translateY(0);
+}
+
+/* Dante knife hanging from header */
+.hanging-container {
+    position: fixed;
+    top: 0;
+    right: 50px;
+    z-index: 1000;
+}
+
+.dante-knife {
+    width: 60px;
+    height: 60px;
+    background-image: url('/images/acae3a_1f80426c02c44fbeb1b00cd70c4aa239~mv2.avif');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    transform: rotate(45deg);
+    animation: knifeSwing 3s ease-in-out infinite;
+    z-index: 10;
+    position: relative;
+}
+
+.knife-chain {
+    position: absolute;
+    top: 15px;
+    left: 25px;
+    width: 3px;
+    height: 80px;
+    background: repeating-linear-gradient(
+        to bottom,
+        #c0c0c0 0px,
+        #c0c0c0 3px,
+        #808080 3px,
+        #808080 6px
+    );
+    border-radius: 1px;
+    animation: chainSwing 3s ease-in-out infinite;
+    z-index: 5;
+}
+
+.dante-runner {
+    position: absolute;
+    top: -15px;
+    right: 150px;
+    width: 50px;
+    height: 50px;
+    background-image: url('/images/4ef3dc6953453888f4236c4fe0648b18.gif');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    animation: danteRunToKnife 3s ease-in-out infinite;
+}
+
+.dante-runner::before {
+    content: '🏃‍♂️';
+    filter: hue-rotate(320deg) brightness(1.2) contrast(1.3);
+}
+
+.hanging-btn {
+    position: absolute;
+    top: 95px;
+    left: -25px;
+    animation: buttonSwing 3s ease-in-out infinite;
+    transform-origin: top center;
+}
+
+@keyframes swordFloat {
+    0%, 100% {
+        transform: translateY(0px);
+    }
+    50% {
+        transform: translateY(-5px);
+    }
+}
+
+@keyframes danteRunToKnife {
+    0% {
+        right: 250px;
+        transform: scaleX(1);
+    }
+    80% {
+        right: 70px;
+        transform: scaleX(1);
+    }
+    90% {
+        right: 60px;
+        transform: scaleX(1) rotateY(180deg);
+    }
+    100% {
+        right: 150px;
+        transform: scaleX(-1);
+    }
+}
+
+@keyframes buttonFloat {
+    0%, 100% {
+        transform: translateY(0px);
+    }
+    50% {
+        transform: translateY(-5px);
+    }
+}
+
+.sword-tip-icon {
+    position: absolute;
+    top: 30px;
+    left: 190px;
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+    animation: buttonFloat 3s ease-in-out infinite;
+    filter: drop-shadow(0 0 10px rgba(233, 69, 96, 0.8)) brightness(1.2);
+    transition: all 0.3s ease;
+    z-index: 11;
+}
+
+.chain {
+    width: 3px;
+    height: 80px;
+    background: repeating-linear-gradient(
+        to bottom,
+        #c0c0c0 0px,
+        #c0c0c0 4px,
+        #808080 4px,
+        #808080 8px
+    );
+    margin: 0 auto;
+    animation: chainSwing 3s ease-in-out infinite;
+}
+
+.publish-icon {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    cursor: pointer;
+    animation: iconSwing 2s ease-in-out infinite;
+    filter: drop-shadow(0 0 10px rgba(233, 69, 96, 0.8)) brightness(1.2);
+    transition: all 0.3s ease;
+    margin: 0 auto;
+    margin-top: -2px;
+    border: 3px solid rgba(233, 69, 96, 0.5);
+}
+
+@keyframes chainSwing {
+    0%, 100% {
+        transform: rotate(0deg);
+    }
+    25% {
+        transform: rotate(5deg);
+    }
+    75% {
+        transform: rotate(-5deg);
+    }
+}
+
+@keyframes iconSwing {
+    0%, 100% {
+        transform: rotate(0deg) translateY(0px);
+    }
+    25% {
+        transform: rotate(8deg) translateY(3px);
+    }
+    75% {
+        transform: rotate(-8deg) translateY(3px);
+    }
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #e94560, #c73650);
+    box-shadow: 0 0 20px rgba(233, 69, 96, 0.6);
+    animation: buttonGlow 2s ease-in-out infinite alternate;
+}
+
+.btn-primary:hover {
+    background: linear-gradient(135deg, #ff6b7a, #e94560);
+    box-shadow: 0 5px 30px rgba(233, 69, 96, 0.8);
+}
+
+@keyframes buttonGlow {
+    from { box-shadow: 0 0 20px rgba(233, 69, 96, 0.6); }
+    to { box-shadow: 0 0 30px rgba(233, 69, 96, 0.9); }
+}
+
+.btn-success {
+    background: linear-gradient(135deg, #00d4aa, #00b894);
+    box-shadow: 0 0 20px rgba(0, 212, 170, 0.4);
+}
+
+.btn-success:hover {
+    background: linear-gradient(135deg, #00b894, #00d4aa);
+    box-shadow: 0 5px 25px rgba(0, 212, 170, 0.6);
+}
+
+.btn-danger {
+    background: linear-gradient(135deg, #ff4757, #ff3742);
+    box-shadow: 0 0 20px rgba(255, 71, 87, 0.4);
+}
+
+.btn-danger:hover {
+    background: linear-gradient(135deg, #ff3742, #ff4757);
+    box-shadow: 0 5px 25px rgba(255, 71, 87, 0.6);
+}
+
+.btn-sm {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.8rem;
+}
+
+/* Forms - Devil May Cry theme */
+.form-group {
+    margin-bottom: 1rem;
+    animation: slideInUp 0.4s ease-out;
+}
+
+.form-label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    color: #e94560;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    text-shadow: 0 0 5px rgba(233, 69, 96, 0.3);
+}
+
+.form-control {
+    width: 100%;
+    padding: 0.75rem;
+    border: 2px solid rgba(233, 69, 96, 0.3);
+    border-radius: 4px;
+    font-size: 0.9rem;
+    background: linear-gradient(145deg, #2a2a3a, #1e1e2e);
+    color: #e0e0e0;
+    transition: all 0.3s ease;
+}
+
+.form-control:focus {
+    outline: none;
+    border-color: #e94560;
+    box-shadow: 0 0 15px rgba(233, 69, 96, 0.4);
+    background: linear-gradient(145deg, #1e1e2e, #2a2a3a);
+}
+
+.form-control::placeholder {
+    color: #888;
+}
+
+/* Search - Devil May Cry theme */
+.search-container {
+    margin-bottom: 1.5rem;
+    animation: slideInUp 0.5s ease-out;
+}
+
+.search-input {
+    width: 300px;
+    padding: 0.75rem 1rem;
+    border: 2px solid rgba(233, 69, 96, 0.3);
+    border-radius: 25px;
+    font-size: 0.9rem;
+    background: linear-gradient(145deg, #2a2a3a, #1e1e2e);
+    color: #e0e0e0;
+    transition: all 0.3s ease;
+}
+
+.search-input:focus {
+    outline: none;
+    border-color: #e94560;
+    box-shadow: 0 0 15px rgba(233, 69, 96, 0.4);
+    background: linear-gradient(145deg, #1e1e2e, #2a2a3a);
+}
+
+.search-input::placeholder {
+    color: #888;
+}
+
+/* Badges */
+.badge {
+    display: inline-block;
+    padding: 0.25rem 0.5rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    border-radius: 12px;
+    text-transform: uppercase;
+}
+
+.badge-success {
+    background: #d4edda;
+    color: #155724;
+}
+
+.badge-warning {
+    background: #fff3cd;
+    color: #856404;
+}
+
+.badge-danger {
+    background: #f8d7da;
+    color: #721c24;
+}
+
+.badge-info {
+    background: #d1ecf1;
+    color: #0c5460;
+}
+
+/* Loading - Stylized */
+.loading {
+    text-align: center;
+    padding: 2rem;
+    color: #e94560;
+    animation: fadeIn 0.5s ease-in;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.spinner {
+    display: inline-block;
+    width: 60px;
+    height: 60px;
+    position: relative;
+    margin: 20px auto;
+}
+
+.spinner::before {
+    content: '🏃‍♂️';
+    position: absolute;
+    width: 60px;
+    height: 60px;
+    background-image: url('/images/4ef3dc6953453888f4236c4fe0648b18.gif');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    animation: danteRun 1.5s linear infinite;
+
+    filter: hue-rotate(320deg) brightness(1.2) contrast(1.3) saturate(1.5);
+}
+
+.spinner::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 4px;
+    bottom: -10px;
+    background: linear-gradient(90deg, transparent, rgba(233, 69, 96, 0.6), transparent);
+    border-radius: 2px;
+    animation: shadowRun 1.5s linear infinite;
+}
+
+@keyframes danteRun {
+    0% { 
+        left: -60px;
+        transform: scaleX(1);
+    }
+    50% {
+        left: 50%;
+        transform: translateX(-50%) scaleX(1);
+    }
+    100% { 
+        left: 100%;
+        transform: scaleX(-1);
+    }
+}
+
+@keyframes shadowRun {
+    0%, 100% { 
+        opacity: 0.3;
+        transform: scaleX(0.5);
+    }
+    50% {
+        opacity: 0.8;
+        transform: scaleX(1.2);
+    }
+}
+
+/* Performance optimizations */
+.card, .stat-card, .partition-card {
+    will-change: transform;
+}
+
+.btn {
+    will-change: transform, box-shadow;
+}
+
+* {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* Modal - Devil May Cry theme */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.8);
+    animation: fadeIn 0.3s ease-out;
+}
+
+.modal-content {
+    background: linear-gradient(145deg, #1e1e2e, #2a2a3a);
+    margin: 5% auto;
+    padding: 0;
+    border-radius: 8px;
+    width: 90%;
+    max-width: 600px;
+    box-shadow: 0 8px 30px rgba(233, 69, 96, 0.3);
+    border: 2px solid rgba(233, 69, 96, 0.3);
+    animation: slideInUp 0.4s ease-out;
+}
+
+.modal-header {
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid rgba(233, 69, 96, 0.3);
+    background: linear-gradient(90deg, #e94560, #c73650);
+    border-radius: 8px 8px 0 0;
+    color: white;
+}
+
+.modal-body {
+    padding: 1.5rem;
+    background: linear-gradient(145deg, #2a2a3a, #1e1e2e);
+    color: #e0e0e0;
+}
+
+.modal-footer {
+    padding: 1rem 1.5rem;
+    border-top: 1px solid rgba(233, 69, 96, 0.3);
+    text-align: right;
+    background: linear-gradient(145deg, #1e1e2e, #2a2a3a);
+    border-radius: 0 0 8px 8px;
+}
+
+.close {
+    float: right;
+    font-size: 1.5rem;
+    font-weight: bold;
+    cursor: pointer;
+    color: #6c757d;
+}
+
+.close:hover {
+    color: #2c3e50;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .container {
+        padding: 1rem;
+    }
+    
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .nav-tabs {
+        padding: 0 1rem;
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+    
+    .nav-tabs .nav-item {
+        display: inline-block;
+    }
+    
+    .header {
+        padding: 1rem;
+    }
+    
+    .search-input {
+        width: 100%;
+    }
+    
+    .partition-info {
+        grid-template-columns: 1fr;
+    }
+    
+    .table-container {
+        font-size: 0.8rem;
+    }
+    
+    th, td {
+        padding: 0.5rem;
+    }
+}
+
+/* Message viewer - Devil May Cry theme */
+.message-viewer {
+    background: linear-gradient(145deg, #1a1a2e, #0f0f23);
+    border: 2px solid rgba(233, 69, 96, 0.3);
+    border-radius: 8px;
+    padding: 1rem;
+    font-family: 'Courier New', monospace;
+    font-size: 0.85rem;
+    max-height: 300px;
+    overflow-y: auto;
+    color: #00ff88;
+    text-shadow: 0 0 5px rgba(0, 255, 136, 0.3);
+    box-shadow: inset 0 0 20px rgba(233, 69, 96, 0.1);
+}
+
+/* Partition info - Devil May Cry theme */
+.partition-info {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    margin-bottom: 1rem;
+    animation: slideInUp 0.6s ease-out;
+}
+
+.partition-card {
+    background: linear-gradient(135deg, #1e1e2e, #2a2a3a);
+    border: 2px solid rgba(233, 69, 96, 0.3);
+    border-radius: 8px;
+    padding: 1rem;
+    text-align: center;
+    color: #e0e0e0;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+}
+
+.partition-card:hover {
+    transform: translateY(-5px) scale(1.02);
+    border-color: #e94560;
+    box-shadow: 0 8px 25px rgba(233, 69, 96, 0.4);
+}
+
+.partition-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(233, 69, 96, 0.2), transparent);
+    transition: left 0.5s;
+}
+
+.partition-card:hover::before {
+    left: 100%;
+}
+
+.partition-number {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #e94560;
+    margin-bottom: 0.5rem;
+    text-shadow: 0 0 10px rgba(233, 69, 96, 0.5);
+}
+
+/* Topic health indicators */
+.health-indicator {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    margin-right: 0.5rem;
+}
+
+.health-good {
+    background: #27ae60;
+}
+
+.health-warning {
+    background: #f39c12;
+}
+
+.health-error {
+    background: #e74c3c;
+}
+
+/* Intro Video */
+.intro-video {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 9999;
+    background: #000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.intro-video video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.video-logo {
+    position: absolute;
+    top: 50px;
+    left: 50px;
+    z-index: 10000;
+    animation: logoGlow 2s ease-in-out infinite alternate;
+}
+
+.video-logo img {
+    width: 150px;
+    height: auto;
+    filter: drop-shadow(0 0 20px rgba(233, 69, 96, 0.8));
+}
+
+.header-logo {
+    width: 60px;
+    height: auto;
+    filter: drop-shadow(0 0 10px rgba(233, 69, 96, 0.5));
+}
+
+@keyframes logoGlow {
+    from { filter: drop-shadow(0 0 20px rgba(233, 69, 96, 0.8)); }
+    to { filter: drop-shadow(0 0 30px rgba(233, 69, 96, 1)) drop-shadow(0 0 40px rgba(233, 69, 96, 0.6)); }
+}
+
+.skip-video {
+    position: absolute;
+    bottom: 30px;
+    right: 30px;
+    background: rgba(233, 69, 96, 0.8);
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+    z-index: 10000;
+    transition: all 0.3s ease;
+}
+
+.skip-video:hover {
+    background: rgba(233, 69, 96, 1);
+    transform: scale(1.05);
+}
+
+.intro-video.fade-out {
+    animation: fadeOut 1s ease-out forwards;
+}
+
+@keyframes fadeOut {
+    to {
+        opacity: 0;
+        visibility: hidden;
+    }
+}
+
+/* Dashboard entrance animation */
+.dashboard-entrance {
+    animation: dashboardSlideIn 1.5s ease-out;
+}
+
+@keyframes dashboardSlideIn {
+    0% {
+        opacity: 0;
+        transform: translateY(50px) scale(0.9);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* Additional utility classes */
+.text-center {
+    text-align: center;
+}
+
+.text-right {
+    text-align: right;
+}
+
+.mb-2 {
+    margin-bottom: 1rem;
+}
+
+.mt-2 {
+    margin-top: 1rem;
+}
+
+.p-2 {
+    padding: 1rem;
+}
+
+/* Topic status indicators */
+.topic-status {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.status-healthy {
+    color: #27ae60;
+}
+
+.status-warning {
+    color: #f39c12;
+}
+
+.status-error {
+    color: #e74c3c;
+}
+
+/* Message formatting */
+.message-content {
+    background: #2c3e50;
+    color: #ecf0f1;
+    padding: 1rem;
+    border-radius: 4px;
+    font-family: 'Courier New', monospace;
+    font-size: 0.85rem;
+    overflow-x: auto;
+}
+
+/* Scrollable content */
+.scrollable {
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+/* Empty state */
+.empty-state {
+    text-align: center;
+    padding: 3rem 1rem;
+    color: #6c757d;
+}
+
+.empty-state h3 {
+    margin-bottom: 1rem;
+    color: #2c3e50;
+}
+
+/* Action buttons */
+.action-buttons {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: flex-end;
+    margin-bottom: 1rem;
+}
+
+@media (max-width: 768px) {
+    .action-buttons {
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+}

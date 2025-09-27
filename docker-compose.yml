@@ -1,0 +1,81 @@
+version: '3.8'
+
+services:
+  kafka-1:
+    image: apache/kafka:3.7.1
+    hostname: kafka-1
+    container_name: kafka-1
+    environment:
+      KAFKA_KRAFT_MODE: "true"
+      KAFKA_PROCESS_ROLES: "broker,controller"
+      KAFKA_NODE_ID: 1
+      KAFKA_CONTROLLER_QUORUM_VOTERS: "1@kafka-1:9093,2@kafka-2:9093,3@kafka-3:9093"
+      KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092,EXTERNAL://0.0.0.0:9192,CONTROLLER://0.0.0.0:9093
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka-1:9092,EXTERNAL://localhost:9192
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,CONTROLLER:PLAINTEXT,EXTERNAL:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
+      KAFKA_LOG_DIRS: /var/lib/kafka/data
+      CLUSTER_ID: "12kGGeoWTqOtmFmYI0aKOA"
+    volumes:
+      - ./data/kafka-1:/var/lib/kafka/data
+    ports:
+      - "9092:9092"   # Internal for other containers
+      - "9192:9192"   # External for host access
+      - "9093:9093"   # Controller
+    networks:
+      - kafka-net
+
+  kafka-2:
+    image: apache/kafka:3.7.1
+    hostname: kafka-2
+    container_name: kafka-2
+    environment:
+      KAFKA_KRAFT_MODE: "true"
+      KAFKA_PROCESS_ROLES: "broker,controller"
+      KAFKA_NODE_ID: 2
+      KAFKA_CONTROLLER_QUORUM_VOTERS: "1@kafka-1:9093,2@kafka-2:9093,3@kafka-3:9093"
+      KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092,EXTERNAL://0.0.0.0:9192,CONTROLLER://0.0.0.0:9093
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka-2:9092,EXTERNAL://localhost:9292
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,CONTROLLER:PLAINTEXT,EXTERNAL:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
+      KAFKA_LOG_DIRS: /var/lib/kafka/data
+      CLUSTER_ID: "12kGGeoWTqOtmFmYI0aKOA"
+    volumes:
+      - ./data/kafka-2:/var/lib/kafka/data
+    ports:
+      - "9094:9092"   # Internal for other containers
+      - "9292:9192"   # External for host access
+      - "9095:9093"   # Controller
+    networks:
+      - kafka-net
+
+  kafka-3:
+    image: apache/kafka:3.7.1
+    hostname: kafka-3
+    container_name: kafka-3
+    environment:
+      KAFKA_KRAFT_MODE: "true"
+      KAFKA_PROCESS_ROLES: "broker,controller"
+      KAFKA_NODE_ID: 3
+      KAFKA_CONTROLLER_QUORUM_VOTERS: "1@kafka-1:9093,2@kafka-2:9093,3@kafka-3:9093"
+      KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092,EXTERNAL://0.0.0.0:9192,CONTROLLER://0.0.0.0:9093
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka-3:9092,EXTERNAL://localhost:9392
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,CONTROLLER:PLAINTEXT,EXTERNAL:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
+      KAFKA_LOG_DIRS: /var/lib/kafka/data
+      CLUSTER_ID: "12kGGeoWTqOtmFmYI0aKOA"
+    volumes:
+      - ./data/kafka-3:/var/lib/kafka/data
+    ports:
+      - "9096:9092"   # Internal for other containers
+      - "9392:9192"   # External for host access
+      - "9097:9093"   # Controller
+    networks:
+      - kafka-net
+
+networks:
+  kafka-net:
+    driver: bridge

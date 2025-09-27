@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kaffy - Kafka Management UI</title>
+    <link rel="stylesheet" href="/css/kaffy-ui.css">
+    <link rel="icon" type="image/x-icon" href="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHZpZXdCb3g9IjAgMCAzMiAzMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIiByeD0iNCIgZmlsbD0iIzJjM2U1MCIvPgo8dGV4dCB4PSIxNiIgeT0iMjIiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxOCIgZm9udC13ZWlnaHQ9ImJvbGQiIGZpbGw9IndoaXRlIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5LPC90ZXh0Pgo8L3N2Zz4K">
+</head>
+<body>
+    <header class="header">
+        <div style="display: flex; justify-content: center; align-items: center; position: relative;">
+            <div style="display: flex; align-items: center; gap: 1rem;">
+                <img src="/images/generated-image (1).png" alt="Logo" class="header-logo">
+            </div>
+        </div>
+    </header>
+
+    <!-- Hanging icon from header -->
+    <div class="hanging-container">
+        <div class="chain"></div>
+        <div class="publish-icon" onclick="kaffyUI.showProducer()" title="Publish Message" style="background-image: url('/images/1c36253e-44dc-45dc-8f7e-14d51bea4544.png'); background-size: contain; background-repeat: no-repeat; background-position: center;"></div>
+    </div>
+    </header>
+
+
+
+    <!-- Intro Video -->
+    <div id="intro-video" class="intro-video">
+        <div class="video-logo">
+            <img src="/images/generated-image (1).png" alt="Logo">
+        </div>
+        <video autoplay muted preload="auto">
+            <source src="/images/video.mp4" type="video/mp4">
+        </video>
+        <div class="skip-video" onclick="kaffyUI.skipVideo()">Skip Intro</div>
+    </div>
+
+    <div class="container">
+        <main id="main-content">
+            <!-- Content will be loaded here dynamically -->
+        </main>
+    </div>
+
+    <script src="/js/kaffy-ui.js"></script>
+</body>
+</html>
