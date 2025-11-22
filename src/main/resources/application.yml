@@ -7,6 +7,4 @@ server:
 
 kafka:
   bootstrap:
-    servers: "pkc-921jm.us-east-2.aws.confluent.cloud:9092"
-  username: "PKFS7CSZAK6526IA"
-  password: "cflt2wWAcEKfsRyaw4xiCGG7odo8yUZ6t5t2l/2HpZk12s4vwJWpvvTfoVR/5N/g;"
+    servers: "localhost:9192"

@@ -111,4 +111,20 @@ public class KaffyappController {
             return ResponseEntity.internalServerError().build();
         }
     }
+
+    @GetMapping("/message/{topicName}/{partition}/{offset}")
+    public ResponseEntity<PartitionMessage> getMessageDetails(
+            @PathVariable String topicName,
+            @PathVariable int partition,
+            @PathVariable long offset) {
+        try {
+            List<PartitionMessage> messages = kaffyAdmin.getMessageAtOffset(topicName, partition, offset);
+            if (messages == null || messages.isEmpty()) {
+                return ResponseEntity.notFound().build();
+            }
+            return ResponseEntity.ok(messages.get(0));
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().build();
+        }
+    }
 }

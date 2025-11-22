@@ -42,11 +42,10 @@ public class KaffyConfig {
     public AdminClient getAdminClient() {
         Properties props = new Properties();
         props.put(AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
-        props.put(SECURITY_PROTOCOL, SASL_SSL);
-        props.put(SASL_JAAS_CONFIG, "org.apache.kafka.common.security.plain.PlainLoginModule required username='PKFS7CSZAK6526IA' password='cflt2wWAcEKfsRyaw4xiCGG7odo8yUZ6t5t2l/2HpZk12s4vwJWpvvTfoVR/5N/g';");
-        props.put(SASL_MECHANISM, PLAIN);
-        props.put(AdminClientConfig.REQUEST_TIMEOUT_MS_CONFIG, "5000");
-        props.put(AdminClientConfig.RETRIES_CONFIG, "3");
+        props.put(AdminClientConfig.REQUEST_TIMEOUT_MS_CONFIG, "30000");
+        props.put(AdminClientConfig.RETRIES_CONFIG, "5");
+        props.put(AdminClientConfig.CONNECTIONS_MAX_IDLE_MS_CONFIG, "300000");
+        props.put(AdminClientConfig.RECONNECT_BACKOFF_MS_CONFIG, "1000");
         return AdminClient.create(props);
     }
 
@@ -54,9 +53,6 @@ public class KaffyConfig {
     public KafkaConsumer<String, String> consumerProperties() {
         Properties props = new Properties();
         props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
-        props.put(SECURITY_PROTOCOL, SASL_SSL);
-        props.put(SASL_JAAS_CONFIG, "org.apache.kafka.common.security.plain.PlainLoginModule required username='PKFS7CSZAK6526IA' password='cflt2wWAcEKfsRyaw4xiCGG7odo8yUZ6t5t2l/2HpZk12s4vwJWpvvTfoVR/5N/g';");
-        props.put(SASL_MECHANISM, PLAIN);
         props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());
         props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());
         props.put(ConsumerConfig.GROUP_ID_CONFIG, "kafka-dashboard-consumer");
@@ -72,9 +68,6 @@ public class KaffyConfig {
     public KafkaProducer<String, String> kafkaProducer() {
         Properties props = new Properties();
         props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
-        props.put(SECURITY_PROTOCOL, SASL_SSL);
-        props.put(SASL_JAAS_CONFIG, "org.apache.kafka.common.security.plain.PlainLoginModule required username='PKFS7CSZAK6526IA' password='cflt2wWAcEKfsRyaw4xiCGG7odo8yUZ6t5t2l/2HpZk12s4vwJWpvvTfoVR/5N/g';");
-        props.put(SASL_MECHANISM, PLAIN);
         props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
         props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
         props.put(ProducerConfig.ACKS_CONFIG, "all");

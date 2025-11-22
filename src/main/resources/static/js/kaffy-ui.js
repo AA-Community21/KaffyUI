@@ -8,8 +8,58 @@ class KaffyUI {
 
     init() {
         this.setupNavigation();
-        this.showIntroVideo();
+        this.handleInitialRoute();
         this.startClusterInfoUpdates();
+    }
+
+    handleInitialRoute() {
+        const path = window.location.pathname;
+        
+        if (path === '/') {
+            this.showIntroVideo();
+        } else if (path.startsWith('/topic/')) {
+            const topicName = path.split('/')[2];
+            this.skipVideoAndLoadTopic(topicName);
+        } else if (path.startsWith('/messages/')) {
+            const parts = path.split('/');
+            const topicName = parts[2];
+            const partition = parseInt(parts[3]);
+            this.skipVideoAndLoadMessages(topicName, partition);
+        } else if (path.startsWith('/message/')) {
+            const parts = path.split('/');
+            const topicName = parts[2];
+            const partition = parseInt(parts[3]);
+            const offset = parseInt(parts[4]);
+            this.skipVideoAndLoadMessage(topicName, partition, offset);
+        } else if (path === '/create-topic') {
+            this.skipVideoAndLoadCreateTopic();
+        } else {
+            this.showIntroVideo();
+        }
+    }
+
+    skipVideoAndLoadTopic(topicName) {
+        const introDiv = document.getElementById('intro-video');
+        introDiv.style.display = 'none';
+        this.loadTopicDetails(topicName);
+    }
+
+    skipVideoAndLoadMessages(topicName, partition) {
+        const introDiv = document.getElementById('intro-video');
+        introDiv.style.display = 'none';
+        this.loadPartitionMessagesPage(topicName, partition);
+    }
+
+    skipVideoAndLoadMessage(topicName, partition, offset) {
+        const introDiv = document.getElementById('intro-video');
+        introDiv.style.display = 'none';
+        this.loadMessageDetails(topicName, partition, offset);
+    }
+
+    skipVideoAndLoadCreateTopic() {
+        const introDiv = document.getElementById('intro-video');
+        introDiv.style.display = 'none';
+        this.loadCreateTopic();
     }
 
     startClusterInfoUpdates() {
@@ -109,7 +159,10 @@ class KaffyUI {
         introDiv.classList.add('fade-out');
         setTimeout(() => {
             introDiv.style.display = 'none';
-            this.showDashboard();
+            // Only show dashboard if we're on the root path
+            if (window.location.pathname === '/') {
+                this.showDashboard();
+            }
         }, 1000);
     }
 
@@ -191,9 +244,12 @@ class KaffyUI {
         }
     }
 
-    loadProducer() {
+    async loadProducer() {
         const content = document.getElementById('main-content');
-        content.innerHTML = this.getProducerHTML();
+        content.innerHTML = this.getLoadingHTML();
+        
+        const producerHTML = await this.getProducerHTML();
+        content.innerHTML = producerHTML;
         this.setupProducerForm();
     }
 
@@ -490,32 +546,54 @@ class KaffyUI {
         `;
     }
 
-    getProducerHTML() {
-        return `
-            <div class="card">
-                <div class="card-header">
-                    Message Producer
-                    <button class="btn btn-primary" style="float: right;" onclick="kaffyUI.loadDashboard()">Back to Dashboard</button>
+    async getProducerHTML() {
+        try {
+            const topics = await this.fetchData('/topics');
+            const topicOptions = topics.map(topic => 
+                `<option value="${topic.topicName}">${topic.topicName}</option>`
+            ).join('');
+            
+            return `
+                <div class="card">
+                    <div class="card-header">
+                        Message Producer
+                        <button class="btn btn-primary" style="float: right;" onclick="kaffyUI.loadDashboard()">Back to Dashboard</button>
+                    </div>
+                    <div class="card-body">
+                        <form id="producer-form">
+                            <div class="form-group">
+                                <label class="form-label">Topic Name</label>
+                                <select id="producer-topic" class="form-control" required>
+                                    <option value="">Select a topic...</option>
+                                    ${topicOptions}
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Key (Optional)</label>
+                                <input type="text" id="producer-key" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Message Value</label>
+                                <textarea id="producer-value" class="form-control" rows="5" required></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-success">Send Message</button>
+                        </form>
+                    </div>
                 </div>
-                <div class="card-body">
-                    <form id="producer-form">
-                        <div class="form-group">
-                            <label class="form-label">Topic Name</label>
-                            <input type="text" id="producer-topic" class="form-control" required>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">Key (Optional)</label>
-                            <input type="text" id="producer-key" class="form-control">
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">Message Value</label>
-                            <textarea id="producer-value" class="form-control" rows="5" required></textarea>
-                        </div>
-                        <button type="submit" class="btn btn-success">Send Message</button>
-                    </form>
+            `;
+        } catch (error) {
+            return `
+                <div class="card">
+                    <div class="card-header">
+                        Message Producer
+                        <button class="btn btn-primary" style="float: right;" onclick="kaffyUI.loadDashboard()">Back to Dashboard</button>
+                    </div>
+                    <div class="card-body">
+                        <p style="color: #e74c3c;">Failed to load topics. Please try again.</p>
+                    </div>
                 </div>
-            </div>
-        `;
+            `;
+        }
     }
 
     getTopicDetailsHTML(topicDetails) {
@@ -569,7 +647,7 @@ class KaffyUI {
                                                 <td>${partition.latestOffset}</td>
                                                 <td>${partition.messageCount}</td>
                                                 <td>
-                                                    <button class="btn btn-primary btn-sm" onclick="kaffyUI.loadPartitionMessages('${topicDetails.topicName}', ${partition.partitionId})">View Messages</button>
+                                                    <button class="btn btn-primary btn-sm" onclick="kaffyUI.loadPartitionMessagesPage('${topicDetails.topicName}', ${partition.partitionId})">View Messages</button>
                                                 </td>
                                             </tr>
                                         `).join('')}
@@ -712,16 +790,25 @@ class KaffyUI {
 
     setupDashboardSearch() {
         const searchInput = document.getElementById('dashboard-topic-search');
-        const table = document.querySelector('#main-content table');
         
-        if (searchInput && table) {
+        if (searchInput) {
             searchInput.addEventListener('input', (e) => {
                 const searchTerm = e.target.value.toLowerCase();
-                const rows = table.querySelectorAll('tbody tr');
                 
-                rows.forEach(row => {
-                    const topicName = row.cells[0].textContent.toLowerCase();
-                    row.style.display = topicName.includes(searchTerm) ? '' : 'none';
+                // Find all tables and look for the one with topic data
+                const tables = document.querySelectorAll('table');
+                tables.forEach(table => {
+                    const headerRow = table.querySelector('thead tr');
+                    if (headerRow && headerRow.textContent.includes('Topic Name')) {
+                        const rows = table.querySelectorAll('tbody tr');
+                        rows.forEach(row => {
+                            const firstCell = row.querySelector('td:first-child');
+                            if (firstCell) {
+                                const topicName = firstCell.textContent.toLowerCase();
+                                row.style.display = topicName.includes(searchTerm) ? '' : 'none';
+                            }
+                        });
+                    }
                 });
             });
         }
@@ -742,6 +829,64 @@ class KaffyUI {
         }
     }
 
+    async loadPartitionMessagesPage(topicName, partition) {
+        // Change URL without page reload
+        window.history.pushState({view: 'messages', topicName, partition}, '', `/messages/${topicName}/${partition}`);
+        
+        const content = document.getElementById('main-content');
+        content.innerHTML = this.getLoadingHTML();
+
+        try {
+            const messages = await this.fetchData(`/topics/${topicName}/partitions/${partition}/messages`);
+            content.innerHTML = this.getPartitionMessagesPageHTML(topicName, partition, messages);
+        } catch (error) {
+            content.innerHTML = this.getErrorHTML(`Failed to load messages for ${topicName} partition ${partition}`);
+        }
+    }
+
+    getPartitionMessagesPageHTML(topicName, partition, messages) {
+        return `
+            <div class="card">
+                <div class="card-header">
+                    Messages - ${topicName} (Partition ${partition})
+                    <button class="btn btn-primary" style="float: right;" onclick="kaffyUI.loadTopicDetails('${topicName}')">Back to Topic</button>
+                </div>
+                <div class="card-body">
+                    <div class="stats-grid" style="margin-bottom: 1.5rem;">
+                        <div class="stat-card">
+                            <div class="stat-value">${messages.length}</div>
+                            <div class="stat-label">Total Messages</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value">${partition}</div>
+                            <div class="stat-label">Partition</div>
+                        </div>
+                    </div>
+                    
+                    <div class="message-list">
+                        ${messages.length > 0 ? messages.map(msg => `
+                            <div class="message-item" onclick="kaffyUI.loadMessageDetails('${topicName}', ${partition}, ${msg.offset})">
+                                <div class="message-header">
+                                    <span class="message-offset">Offset: ${msg.offset}</span>
+                                    <span class="message-timestamp">${new Date(msg.timestamp).toLocaleString()}</span>
+                                </div>
+                                <div class="message-key">
+                                    <strong>Key:</strong> ${msg.key || 'null'}
+                                </div>
+                                <div class="message-preview">
+                                    <strong>Value:</strong> ${this.truncateText(msg.value, 200)}
+                                </div>
+                                <div class="message-click-hint">
+                                    <small>Click to view full message details</small>
+                                </div>
+                            </div>
+                        `).join('') : '<div class="empty-state"><h3>No Messages Found</h3><p>This partition contains no messages.</p></div>'}
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+
     showMessagesModal(topicName, partition, messages) {
         const modal = document.createElement('div');
         modal.className = 'modal';
@@ -755,12 +900,12 @@ class KaffyUI {
                 <div class="modal-body">
                     <div class="message-viewer">
                         ${messages.map(msg => `
-                            <div style="margin-bottom: 1rem; padding: 0.5rem; border: 1px solid #ddd;">
+                            <div class="message-item" style="margin-bottom: 1rem; padding: 0.5rem; border: 1px solid #ddd; cursor: pointer;" onclick="kaffyUI.loadMessageDetails('${topicName}', ${partition}, ${msg.offset})">
                                 <strong>Offset:</strong> ${msg.offset}<br>
                                 <strong>Key:</strong> ${msg.key || 'null'}<br>
                                 <strong>Timestamp:</strong> ${new Date(msg.timestamp).toLocaleString()}<br>
-                                <strong>Value:</strong><br>
-                                <pre style="margin-top: 0.5rem;">${msg.value}</pre>
+                                <strong>Value Preview:</strong> ${this.truncateText(msg.value, 100)}<br>
+                                <small style="color: #666;">Click to view full message details</small>
                             </div>
                         `).join('')}
                     </div>
@@ -768,6 +913,96 @@ class KaffyUI {
             </div>
         `;
         document.body.appendChild(modal);
+    }
+
+    async loadMessageDetails(topicName, partition, offset) {
+        // Close any open modals
+        const modals = document.querySelectorAll('.modal');
+        modals.forEach(modal => modal.remove());
+        
+        // Change URL without page reload
+        window.history.pushState({view: 'message', topicName, partition, offset}, '', `/message/${topicName}/${partition}/${offset}`);
+        
+        const content = document.getElementById('main-content');
+        content.innerHTML = this.getLoadingHTML();
+
+        try {
+            const message = await this.fetchData(`/message/${topicName}/${partition}/${offset}`);
+            content.innerHTML = this.getMessageDetailsHTML(message);
+        } catch (error) {
+            content.innerHTML = this.getErrorHTML(`Failed to load message details`);
+        }
+    }
+
+    getMessageDetailsHTML(message) {
+        return `
+            <div class="card">
+                <div class="card-header">
+                    Message Details - ${message.topic} (Partition ${message.partition}, Offset ${message.offset})
+                    <button class="btn btn-primary" style="float: right;" onclick="kaffyUI.loadTopicDetails('${message.topic}')">Back to Topic</button>
+                </div>
+                <div class="card-body">
+                    <div class="message-details">
+                        <div class="detail-section">
+                            <h4>Message Information</h4>
+                            <table class="detail-table">
+                                <tr><td><strong>Topic:</strong></td><td>${message.topic}</td></tr>
+                                <tr><td><strong>Partition:</strong></td><td>${message.partition}</td></tr>
+                                <tr><td><strong>Offset:</strong></td><td>${message.offset}</td></tr>
+                                <tr><td><strong>Key:</strong></td><td>${message.key || 'null'}</td></tr>
+                                <tr><td><strong>Timestamp:</strong></td><td>${new Date(message.timestamp).toLocaleString()}</td></tr>
+                            </table>
+                        </div>
+
+                        ${message.headers && Object.keys(message.headers).length > 0 ? `
+                            <div class="detail-section">
+                                <h4>Headers</h4>
+                                <div class="json-viewer">
+                                    <button class="expand-btn" onclick="kaffyUI.toggleJsonExpand(this)">Expand JSON</button>
+                                    <pre class="json-content collapsed">${JSON.stringify(message.headers, null, 2)}</pre>
+                                </div>
+                            </div>
+                        ` : ''}
+
+                        <div class="detail-section">
+                            <h4>Message Value</h4>
+                            <div class="json-viewer">
+                                <button class="expand-btn" onclick="kaffyUI.toggleJsonExpand(this)">Expand JSON</button>
+                                <pre class="json-content collapsed">${this.formatJsonValue(message.value)}</pre>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+
+    formatJsonValue(value) {
+        try {
+            const parsed = JSON.parse(value);
+            return JSON.stringify(parsed, null, 2);
+        } catch (e) {
+            return value;
+        }
+    }
+
+    toggleJsonExpand(button) {
+        const jsonContent = button.nextElementSibling;
+        const isCollapsed = jsonContent.classList.contains('collapsed');
+        
+        if (isCollapsed) {
+            jsonContent.classList.remove('collapsed');
+            button.textContent = 'Collapse JSON';
+        } else {
+            jsonContent.classList.add('collapsed');
+            button.textContent = 'Expand JSON';
+        }
+    }
+
+    truncateText(text, maxLength) {
+        if (!text) return 'null';
+        if (text.length <= maxLength) return text;
+        return text.substring(0, maxLength) + '...';
     }
 
     loadCreateTopic() {
@@ -878,6 +1113,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 kaffyUI.loadTopicDetails(event.state.topicName);
             } else if (event.state.view === 'createTopic') {
                 kaffyUI.loadCreateTopic();
+            } else if (event.state.view === 'message') {
+                kaffyUI.loadMessageDetails(event.state.topicName, event.state.partition, event.state.offset);
+            } else if (event.state.view === 'messages') {
+                kaffyUI.loadPartitionMessagesPage(event.state.topicName, event.state.partition);
             }
         }
     });
